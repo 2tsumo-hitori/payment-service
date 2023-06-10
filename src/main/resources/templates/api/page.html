@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script
+            type="text/javascript"
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+    ></script>
+    <script
+            type="text/javascript"
+            src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"
+    ></script>
+    <script>
+        function iamport(){
+            IMP.init('imp66037800');
+            IMP.request_pay({
+                pg : 'kcp',
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : '상품1' ,
+                amount : 100,
+                buyer_email : 'iamport@siot.do',
+                buyer_name : '구매자이름',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울 강남구 도곡동',
+                buyer_postcode : '123-456'
+            }, function(res) {
+                $.ajax({
+                    type : "POST",
+                    url : "/api/paymentValidate/" + res.imp_uid
+                }).done(function(data) {
+
+                    if(res.paid_amount == data.response.amount){
+                        alert("결제 및 결제검증완료");
+
+                        //결제 성공 시 비즈니스 로직
+
+                    } else {
+                        alert("결제 실패");
+                    }
+                });
+            });
+        }
+    </script>
+    <meta charset="UTF-8" />
+    <title>Sample Payment</title>
+</head>
+<body>
+<button onclick="iamport()">결제하기</button>
+<!-- 결제하기 버튼 생성 -->
+</body>
+</html>

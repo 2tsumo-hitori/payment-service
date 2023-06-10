@@ -1,0 +1,20 @@
+payment:
+  api-key: 9586187999666324
+  api-secret: DO8or1iYkSoz4YiiWbmdD06edAuqJufnjnLKp4JJX8j26Ck3NHgqHnEVX9mGDB3XZOHpTr9QzsSF4dIS
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/payment-service
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
