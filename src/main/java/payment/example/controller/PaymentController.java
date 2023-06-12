@@ -4,9 +4,16 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import payment.example.controller.dto.PaymentRequest;
+import payment.example.controller.dto.PaymentResponse;
+import payment.example.domain.Order;
+import payment.example.repository.dto.OrderResponse;
 import payment.example.service.PaymentService;
+import payment.example.service.appservice.PaymentCancelRequest;
+import payment.example.service.appservice.RestTemplateService;
 
 import java.io.IOException;
 
@@ -16,6 +23,7 @@ import java.io.IOException;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final RestTemplateService restTemplateService;
 
     @GetMapping("page")
     public String index() {
@@ -23,15 +31,20 @@ public class PaymentController {
     }
 
     @ResponseBody
-    @PostMapping(value="/paymentValidate/{imp_uid}")
-    public IamportResponse<Payment> paymentByImpUid(
-            @PathVariable(value= "imp_uid") String imp_uid) throws IamportResponseException, IOException
+    @PostMapping("/payment-validate")
+    public PaymentResponse<OrderResponse> paymentByImpUid(
+            @RequestBody PaymentRequest request
+    ) throws IamportResponseException, IOException
     {
-        return paymentService.paymentValidate(imp_uid);
+        return new PaymentResponse<>(HttpStatus.OK, paymentService.paymentValidate(request));
     }
 
-    // 장바구니 구매
+    @ResponseBody
+    @PostMapping("/payment/cancel")
+    public PaymentResponse<String> paymentCancel(@RequestBody PaymentCancelRequest request) {
+        restTemplateService.paymentCancel(request);
 
-    // 구매페이지에서 직접 구매
+        return new PaymentResponse<>(HttpStatus.OK, "결제 취소 완료");
+    }
 }
 

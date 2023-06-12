@@ -18,14 +18,12 @@ import static lombok.AccessLevel.PROTECTED;
 public class Cart {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Item item;
+    private Member member;
 
-    @Builder
-    public Cart(Item item) {
-        this.item = item;
-    }
+    @OneToMany
+    private List<Item> item = new ArrayList<>();
 }

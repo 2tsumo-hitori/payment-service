@@ -1,24 +1,34 @@
 package payment.example.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private Long stock;
 
-    private Long price;
+    private int price;
+
+    public void decreaseItemStock() {
+        this.stock -= 1;
+    }
 
     @Builder
-    public Item(String name, Long stock, Long price) {
+    public Item(String name, Long stock, int price) {
         this.name = name;
         this.stock = stock;
         this.price = price;
