@@ -1,13 +1,15 @@
 package payment.example.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import payment.example.validate.PreCondition;
+
+import java.util.Objects;
 
 import static jakarta.persistence.EnumType.*;
+import static java.util.Objects.*;
 import static payment.example.domain.OrderStatus.*;
+import static payment.example.validate.PreCondition.*;
 
 @Entity
 @Getter
@@ -27,22 +29,22 @@ public class Order {
     @ManyToOne
     private Item item;
 
+    @Builder
     public Order(OrderStatus status, Member member, Item item) {
+        require(nonNull(member));
+        require(nonNull(item));
+
         this.status = status;
         this.member = member;
         this.item = item;
     }
 
+    @Builder
     public Order(Member member, Item item) {
+        require(nonNull(member));
+        require(nonNull(item));
+
         this.member = member;
         this.item = item;
-    }
-
-    public static Order create(Member member, Item item) {
-        return new Order(member, item);
-    }
-
-    public static Order create(OrderStatus status,Member member, Item item) {
-        return new Order(status, member, item);
     }
 }

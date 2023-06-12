@@ -1,4 +1,4 @@
-package payment.example.service.appservice;
+package payment.example.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

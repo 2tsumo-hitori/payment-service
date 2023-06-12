@@ -11,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import payment.example.KeyConfig;
+import payment.example.service.dto.PaymentCancelRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,6 @@ public class PortOneAppService {
     private WebClient webClient;
 
     private final KeyConfig keyConfig;
-
     private Gson gson = new Gson();
 
     @PostConstruct

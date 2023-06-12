@@ -27,4 +27,10 @@ public class PreCondition {
             throw new ItemStatusException("존재하지 않는 상품입니다.");
         }
     }
+
+    public static void require(boolean expression) {
+        if(!expression) {
+            throw new IllegalArgumentException();
+        }
+    }
 }

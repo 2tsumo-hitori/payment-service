@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import static java.util.Objects.*;
+import static org.apache.logging.log4j.util.Strings.*;
+import static payment.example.validate.PreCondition.*;
 
 @Entity
 @Getter
@@ -23,12 +25,18 @@ public class Item {
 
     private int price;
 
+    private static final int MIN_VALUE = 0;
+
     public void decreaseItemStock() {
         this.stock -= 1;
     }
 
     @Builder
     public Item(String name, Long stock, int price) {
+        require(isNotBlank(name));
+        require(price > MIN_VALUE);
+        require(stock > MIN_VALUE);
+
         this.name = name;
         this.stock = stock;
         this.price = price;

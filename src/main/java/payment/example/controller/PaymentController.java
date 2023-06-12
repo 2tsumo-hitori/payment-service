@@ -9,7 +9,7 @@ import payment.example.controller.dto.PaymentRequest;
 import payment.example.controller.dto.PaymentResponse;
 import payment.example.repository.dto.OrderResponse;
 import payment.example.service.appservice.PaymentAppService;
-import payment.example.service.appservice.PaymentCancelRequest;
+import payment.example.service.dto.PaymentCancelRequest;
 import payment.example.service.appservice.PortOneAppService;
 
 import java.io.IOException;

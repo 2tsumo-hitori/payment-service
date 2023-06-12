@@ -26,7 +26,11 @@ public class OrderService {
 
         item.decreaseItemStock();
 
-        Order order = orderRepository.save(Order.create(member, item));
+        Order order = orderRepository.save(Order
+                .builder()
+                .member(member)
+                .item(item)
+                .build());
 
         return orderRepository.findOrder(order.getId());
     }
