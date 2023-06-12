@@ -17,17 +17,17 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public class ApiAdvice {
     @ExceptionHandler(ItemStatusException.class)
-    public ErrorResponse exception(ItemStatusException ex) {
+    public PaymentResponse exception(ItemStatusException ex) {
         log.info(ex.getMessage(), ex);
 
-        return new ErrorResponse(new PaymentResponse(BAD_REQUEST, ex.getMessage(), "결제 실패"));
+        return new PaymentResponse(BAD_REQUEST, ex.getMessage(), "결제 실패");
     }
 
     @ExceptionHandler(OutOfStockException.class)
-    public ErrorResponse exception(OutOfStockException ex) {
+    public PaymentResponse exception(OutOfStockException ex) {
         log.info(ex.getMessage(), ex);
 
-        return new ErrorResponse(new PaymentResponse(BAD_REQUEST, ex.getMessage(), "결제 실패"));
+        return new PaymentResponse(BAD_REQUEST, ex.getMessage(), "결제 실패");
     }
 
     @Data

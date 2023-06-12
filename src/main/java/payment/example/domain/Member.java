@@ -25,9 +25,6 @@ public class Member {
 
     private int point;
 
-    @OneToMany
-    private List<Cart> carts = new ArrayList<>();
-
     @Builder
     public Member(String name, Address address, int point) {
         this.name = name;

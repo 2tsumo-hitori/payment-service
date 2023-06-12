@@ -1,4 +1,4 @@
-package payment.example.service;
+package payment.example.service.appservice;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -10,6 +10,7 @@ import payment.example.controller.dto.PaymentRequest;
 import payment.example.domain.Item;
 import payment.example.repository.ItemRepository;
 import payment.example.repository.dto.OrderResponse;
+import payment.example.service.OrderService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -18,7 +19,7 @@ import static payment.example.validate.PreCondition.*;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService {
+public class PaymentAppService {
 
     private final IamportClient iamportClient;
 

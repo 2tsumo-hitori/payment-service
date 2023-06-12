@@ -1,19 +1,16 @@
 package payment.example.controller;
 
 import com.siot.IamportRestClient.exception.IamportResponseException;
-import com.siot.IamportRestClient.response.IamportResponse;
-import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import payment.example.controller.dto.PaymentRequest;
 import payment.example.controller.dto.PaymentResponse;
-import payment.example.domain.Order;
 import payment.example.repository.dto.OrderResponse;
-import payment.example.service.PaymentService;
+import payment.example.service.appservice.PaymentAppService;
 import payment.example.service.appservice.PaymentCancelRequest;
-import payment.example.service.appservice.RestTemplateService;
+import payment.example.service.appservice.PortOneAppService;
 
 import java.io.IOException;
 
@@ -22,8 +19,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentService paymentService;
-    private final RestTemplateService restTemplateService;
+    private final PaymentAppService paymentAppService;
+    private final PortOneAppService portOneAppService;
 
     @GetMapping("page")
     public String index() {
@@ -34,15 +31,16 @@ public class PaymentController {
     @PostMapping("/payment-validate")
     public PaymentResponse<OrderResponse> paymentByImpUid(
             @RequestBody PaymentRequest request
-    ) throws IamportResponseException, IOException
-    {
-        return new PaymentResponse<>(HttpStatus.OK, paymentService.paymentValidate(request));
+    ) throws IamportResponseException, IOException {
+        return new PaymentResponse<>(HttpStatus.OK, paymentAppService.paymentValidate(request));
     }
 
     @ResponseBody
     @PostMapping("/payment/cancel")
-    public PaymentResponse<String> paymentCancel(@RequestBody PaymentCancelRequest request) {
-        restTemplateService.paymentCancel(request);
+    public PaymentResponse<String> paymentCancel(
+            @RequestBody PaymentCancelRequest request
+    ) {
+        portOneAppService.paymentCancel(request);
 
         return new PaymentResponse<>(HttpStatus.OK, "결제 취소 완료");
     }

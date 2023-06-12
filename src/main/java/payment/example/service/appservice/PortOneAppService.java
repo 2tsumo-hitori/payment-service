@@ -1,6 +1,5 @@
 package payment.example.service.appservice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.annotation.PostConstruct;
@@ -13,14 +12,14 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import payment.example.KeyConfig;
 
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
-public class RestTemplateService {
+public class PortOneAppService {
     private WebClient webClient;
 
     private final KeyConfig keyConfig;
+
+    private Gson gson = new Gson();
 
     @PostConstruct
     public void initWebClient() {
@@ -59,8 +58,6 @@ public class RestTemplateService {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
-        Gson gson = new Gson();
 
         JsonObject jsonObject = gson.fromJson(token, JsonObject.class);
 

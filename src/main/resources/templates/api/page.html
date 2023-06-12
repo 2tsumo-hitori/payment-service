@@ -10,13 +10,30 @@
             src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"
     ></script>
     <script>
+        function cancelOrder(res) {
+            let obj = {
+                "reason": "내부 사정으로 인한 주문 취소",
+                "impUid": res.imp_uid,
+                "amount": res.amount
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/api/payment/cancel",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(obj)
+            }).done(function (res) {
+                console.log(res);
+            })
+        }
+
         function iamport(){
             IMP.init('imp66037800');
             IMP.request_pay({
                 pg : 'kcp',
                 pay_method : 'card',
                 merchant_uid : 'merchant_' + new Date().getTime(),
-                name : '상품2',
+                name : '상품1',
                 amount : 100,
                 buyer_email : 'iamport@siot.do',
                 buyer_name : '구매자이름',
@@ -39,22 +56,10 @@
                     data: JSON.stringify(data)
                 }).done(function(response) {
                     console.log(response);
-                    if (response.errorResponse.data == "결제 실패") {
-
-                        let obj = {
-                            "reason" : "내부 사정으로 인한 주문 취소",
-                            "impUid" : res.imp_uid,
-                            "amount" : res.amount
-                        }
-
-                        $.ajax({
-                            type : "POST",
-                            url : "/api/payment/cancel",
-                            contentType: 'application/json; charset=utf-8',
-                            data: JSON.stringify(obj)
-                        }).done(function (res) {
-                            console.log(res);
-                        })
+                    if (response.status == "BAD_REQUEST") {
+                        cancelOrder(res);
+                    } else {
+                        alert('결제 완료');
                     }
                 });
             });
