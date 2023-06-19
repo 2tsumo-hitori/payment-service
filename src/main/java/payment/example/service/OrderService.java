@@ -24,27 +24,29 @@ public class OrderService {
     public OrderResponse makeOrder(Item item, Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
 
-        Order order = null;
+        Order order = getOrder(item, member);
 
+        return orderRepository.findOrder(order.getId());
+    }
+
+    private Order getOrder(Item item, Member member) {
         try {
             itemStockValidate(item.getStock() > MINIMUM_SIZE);
 
             item.decreaseItemStock();
 
-            order = orderRepository.save(Order
+            return orderRepository.save(Order
                     .builder()
                     .member(member)
                     .item(item)
                     .build());
         } catch(OutOfStockException e) {
-            orderRepository.save(Order
+            return orderRepository.save(Order
                     .builder()
                     .member(member)
                     .item(item)
                     .status(OrderStatus.주문_대기)
                     .build());
         }
-
-        return orderRepository.findOrder(order.getId());
     }
 }
