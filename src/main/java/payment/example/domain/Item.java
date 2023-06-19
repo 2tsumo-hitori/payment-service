@@ -35,7 +35,6 @@ public class Item {
     public Item(String name, Long stock, int price) {
         require(isNotBlank(name));
         require(price > MIN_VALUE);
-        require(stock > MIN_VALUE);
 
         this.name = name;
         this.stock = stock;

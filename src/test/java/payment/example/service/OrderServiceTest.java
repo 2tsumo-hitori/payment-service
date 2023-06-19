@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.domain.Address;
-import payment.example.domain.Item;
-import payment.example.domain.Member;
-import payment.example.domain.Order;
+import payment.example.domain.*;
 import payment.example.repository.ItemRepository;
 import payment.example.repository.MemberRepository;
 import payment.example.repository.OrderRepository;
@@ -59,5 +56,18 @@ class OrderServiceTest {
         OrderResponse orderResponse = orderService.makeOrder(item, member.getId());
 
         Assertions.assertThat(orderResponse).isNotNull();
+    }
+
+    @Test
+    void 주문_생성_성공__주문_대기_상태() {
+        Item zeroStockItem = itemRepository.save(Item.builder()
+                .name("상품3")
+                .price(100)
+                .stock(0L)
+                .build());
+
+        OrderResponse orderResponse = orderService.makeOrder(zeroStockItem, member.getId());
+
+        Assertions.assertThat(orderResponse.getStatus()).isEqualTo(OrderStatus.주문_대기);
     }
 }
