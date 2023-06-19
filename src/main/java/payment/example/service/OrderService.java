@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import payment.example.domain.Item;
 import payment.example.domain.Member;
 import payment.example.domain.Order;
+import payment.example.domain.OrderStatus;
+import payment.example.exception.OutOfStockException;
 import payment.example.repository.MemberRepository;
 import payment.example.repository.OrderRepository;
 import payment.example.repository.dto.OrderResponse;
@@ -18,19 +20,30 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final OrderRepository orderRepository;
     private final static int MINIMUM_SIZE = 0;
-    @Transactional
+    @Transactional(noRollbackFor = OutOfStockException.class)
     public OrderResponse makeOrder(Item item, Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
 
-        itemStockValidate(item.getStock() > MINIMUM_SIZE);
+        Order order = null;
 
-        item.decreaseItemStock();
+        try {
+            itemStockValidate(item.getStock() > MINIMUM_SIZE);
 
-        Order order = orderRepository.save(Order
-                .builder()
-                .member(member)
-                .item(item)
-                .build());
+            item.decreaseItemStock();
+
+            order = orderRepository.save(Order
+                    .builder()
+                    .member(member)
+                    .item(item)
+                    .build());
+        } catch(OutOfStockException e) {
+            orderRepository.save(Order
+                    .builder()
+                    .member(member)
+                    .item(item)
+                    .status(OrderStatus.주문_대기)
+                    .build());
+        }
 
         return orderRepository.findOrder(order.getId());
     }
