@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import payment.example.domain.Address;
 import payment.example.domain.Item;
 import payment.example.domain.Member;
+import payment.example.domain.Stock;
 import payment.example.repository.ItemRepository;
 import payment.example.repository.MemberRepository;
 
@@ -47,7 +48,7 @@ public class Config {
         itemRepository.save(Item.builder()
                 .name("상품1")
                 .price(100)
-                .stock(100L)
+                .stock(Stock.builder().remain(100).build())
                 .build());
     }
 }

@@ -12,12 +12,11 @@ class ItemTest {
         Item item = Item.builder()
                 .name("상품1")
                 .price(100)
-                .stock(100L)
+                .stock(Stock.builder().remain(100).build())
                 .build();
 
         assertThat(item.getName()).isEqualTo("상품1");
         assertThat(item.getPrice()).isEqualTo(100);
-        assertThat(item.getStock()).isEqualTo(100L);
     }
 
     @ParameterizedTest
@@ -26,7 +25,7 @@ class ItemTest {
         assertThatThrownBy(() -> Item.builder()
                 .name(name)
                 .price(100)
-                .stock(100L)
+                .stock(Stock.builder().remain(100).build())
                 .build()).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -35,16 +34,7 @@ class ItemTest {
         assertThatThrownBy(() -> Item.builder()
                 .name("상품")
                 .price(-1)
-                .stock(100L)
-                .build()).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void 상품_생성_실패__재고가_0_보다_작음() {
-        assertThatThrownBy(() -> Item.builder()
-                .name("상품")
-                .price(100)
-                .stock(-1L)
+                .stock(Stock.builder().remain(100).build())
                 .build()).isInstanceOf(IllegalArgumentException.class);
     }
 }

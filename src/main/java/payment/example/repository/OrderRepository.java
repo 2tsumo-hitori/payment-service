@@ -7,7 +7,7 @@ import payment.example.repository.dto.OrderResponse;
 import payment.example.domain.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("select new payment.example.repository.dto.OrderResponse(o.id, o.status, m.id, m.name, i.id, i.name, i.stock)" +
+    @Query("select new payment.example.repository.dto.OrderResponse(o.id, o.status, m.id, m.name, i.id, i.name)" +
             " from Order o" +
             " join o.member m" +
             " join o.item i" +

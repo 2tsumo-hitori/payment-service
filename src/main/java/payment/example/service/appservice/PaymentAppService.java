@@ -33,14 +33,15 @@ public class PaymentAppService {
 
         Optional<Item> item = itemRepository.findByName(request.getItemName());
 
-        validation(payment, item);
+        validation(payment, item, request.getQuantity());
 
-        return orderService.makeOrder(item.get(), request.getMemberId());
+        return orderService.makeOrder(item.get(), request.getMemberId(), request.getQuantity());
     }
 
-    private static void validation(Payment payment, Optional<Item> item) {
+    private static void validation(Payment payment, Optional<Item> item, long quantity) {
         itemExistValidate(item.isPresent());
         itemNameValidate(item.get().getName().equals(payment.getName()));
         itemPriceValidate(item.get().getPrice() == payment.getAmount().intValue());
+        itemPriceValidate(item.get().getQuantity() > quantity);
     }
 }

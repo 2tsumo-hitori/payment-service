@@ -1,6 +1,7 @@
 package payment.example.service;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,12 @@ import payment.example.repository.MemberRepository;
 import payment.example.repository.OrderRepository;
 import payment.example.repository.dto.OrderResponse;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 @SpringBootTest
-@Transactional
 class OrderServiceTest {
 
     @Autowired
@@ -47,27 +51,49 @@ class OrderServiceTest {
         item = itemRepository.save(Item.builder()
                 .name("상품2")
                 .price(100)
-                .stock(100L)
+                .stock(Stock.builder().remain(1000).build())
                 .build());
+    }
+
+    @AfterEach
+    public void after() {
+        orderRepository.deleteAll();
+        itemRepository.deleteAll();
+        memberRepository.deleteAll();
     }
 
     @Test
     void 주문_생성_성공() {
-        OrderResponse orderResponse = orderService.makeOrder(item, member.getId());
+        OrderResponse orderResponse = orderService.makeOrder(item, member.getId(), 5);
 
         Assertions.assertThat(orderResponse).isNotNull();
     }
 
     @Test
-    void 주문_생성_성공__주문_대기_상태() {
-        Item zeroStockItem = itemRepository.save(Item.builder()
-                .name("상품3")
-                .price(100)
-                .stock(0L)
-                .build());
+    void 주문_생성_동시성_테스트_성공() throws InterruptedException {
 
-        OrderResponse orderResponse = orderService.makeOrder(zeroStockItem, member.getId());
+        long beforeStock = itemRepository.findById(item.getId()).orElseThrow().getQuantity();
 
-        Assertions.assertThat(orderResponse.getStatus()).isEqualTo(OrderStatus.주문_대기);
+        int threadCount = 1000;
+        ExecutorService executorService = Executors.newFixedThreadPool(1000);
+
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        for (int i = 0; i < threadCount; i++) {
+            executorService.execute(() -> {
+                    try {
+                        orderService.makeOrder(item, member.getId(), 1);
+                    }
+                    finally {
+                        latch.countDown();
+                    }
+                }
+            );
+        }
+
+        latch.await();
+
+        Assertions.assertThat(beforeStock - threadCount).isZero();
+        Assertions.assertThat(orderRepository.findAll().size()).isEqualTo(threadCount);
     }
 }
