@@ -15,7 +15,7 @@ import payment.example.service.OrderService;
 import java.io.IOException;
 import java.util.Optional;
 
-import static payment.example.validate.PreCondition.*;
+import static payment.example.support.validate.PreCondition.*;
 
 @Service
 @RequiredArgsConstructor

@@ -10,7 +10,7 @@ import payment.example.repository.MemberRepository;
 import payment.example.repository.OrderRepository;
 import payment.example.repository.dto.OrderResponse;
 
-import static payment.example.validate.PreCondition.*;
+import static payment.example.support.validate.PreCondition.*;
 
 @Service
 @RequiredArgsConstructor

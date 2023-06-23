@@ -4,17 +4,11 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
-import payment.example.validate.PreCondition;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.*;
 import static lombok.AccessLevel.PROTECTED;
 import static org.apache.logging.log4j.util.Strings.*;
-import static payment.example.validate.PreCondition.*;
+import static payment.example.support.validate.PreCondition.*;
 
 @Entity
 @Getter

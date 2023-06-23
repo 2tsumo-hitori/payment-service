@@ -1,4 +1,4 @@
-package payment.example.validate;
+package payment.example.support.validate;
 
 import payment.example.exception.ItemStatusException;
 import payment.example.exception.OutOfStockException;

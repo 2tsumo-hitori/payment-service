@@ -6,9 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static java.util.Objects.*;
 import static org.apache.logging.log4j.util.Strings.*;
-import static payment.example.validate.PreCondition.*;
+import static payment.example.support.validate.PreCondition.*;
 
 @Entity
 @Getter

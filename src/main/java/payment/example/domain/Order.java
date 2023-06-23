@@ -2,14 +2,11 @@ package payment.example.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import payment.example.validate.PreCondition;
-
-import java.util.Objects;
 
 import static jakarta.persistence.EnumType.*;
 import static java.util.Objects.*;
 import static payment.example.domain.OrderStatus.*;
-import static payment.example.validate.PreCondition.*;
+import static payment.example.support.validate.PreCondition.*;
 
 @Entity
 @Getter
