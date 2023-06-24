@@ -1,4 +1,4 @@
-package payment.example.service.appservice;
+package payment.example.app.service.appservice;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -6,16 +6,18 @@ import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.controller.dto.PaymentRequest;
-import payment.example.domain.Item;
-import payment.example.repository.ItemRepository;
-import payment.example.repository.dto.OrderResponse;
-import payment.example.service.OrderService;
+import payment.example.app.controller.dto.PaymentRequest;
+import payment.example.app.repository.ItemRepository;
+import payment.example.app.repository.dto.OrderResponse;
+import payment.example.app.service.OrderService;
+import payment.example.common.domain.Item;
+
 
 import java.io.IOException;
 import java.util.Optional;
 
-import static payment.example.validate.PreCondition.*;
+import static payment.example.common.support.validate.PreCondition.*;
+
 
 @Service
 @RequiredArgsConstructor

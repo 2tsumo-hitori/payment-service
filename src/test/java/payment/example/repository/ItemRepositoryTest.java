@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import payment.example.common.domain.Item;
 import payment.example.app.repository.ItemRepository;
+import payment.example.common.domain.Stock;
 
 @SpringBootTest
 @Transactional
@@ -19,7 +20,13 @@ class ItemRepositoryTest {
 
     @Test
     void 상품_이름으로_찾기_성공() {
-        item = itemRepository.findByName("상품1").orElseThrow();
+        itemRepository.save(Item.builder()
+                .name("상품")
+                .price(100)
+                .stock(Stock.builder().remain(100).build())
+                .build());
+
+        item = itemRepository.findByName("상품").orElseThrow();
 
         Assertions.assertThat(item).isNotNull();
     }

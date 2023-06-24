@@ -2,10 +2,7 @@ package payment.example.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import payment.example.common.domain.Address;
-import payment.example.common.domain.Item;
-import payment.example.common.domain.Member;
-import payment.example.common.domain.Order;
+import payment.example.common.domain.*;
 
 import static org.assertj.core.api.Assertions.*;
 

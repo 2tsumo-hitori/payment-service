@@ -1,13 +1,14 @@
-package payment.example.domain;
+package payment.example.common.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import payment.example.common.support.validate.PreCondition;
 
 import static org.apache.logging.log4j.util.Strings.*;
+import static payment.example.common.support.validate.PreCondition.itemStockValidate;
+import static payment.example.common.support.validate.PreCondition.require;
 
 @Entity
 @Getter

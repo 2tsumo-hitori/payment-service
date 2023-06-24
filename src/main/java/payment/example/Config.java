@@ -1,7 +1,6 @@
 package payment.example;
 
 import com.siot.IamportRestClient.IamportClient;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,6 +12,7 @@ import payment.example.common.domain.Item;
 import payment.example.common.domain.Member;
 import payment.example.app.repository.ItemRepository;
 import payment.example.app.repository.MemberRepository;
+import payment.example.common.domain.Stock;
 import payment.example.common.support.aop.LogTraceAspect;
 import payment.example.common.support.logtrace.LogTrace;
 

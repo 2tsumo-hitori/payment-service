@@ -1,10 +1,10 @@
-package payment.example.service;
+package payment.example.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.domain.Stock;
-import payment.example.repository.StockRepository;
+import payment.example.app.repository.StockRepository;
+import payment.example.common.domain.Stock;
 
 @Service
 @RequiredArgsConstructor

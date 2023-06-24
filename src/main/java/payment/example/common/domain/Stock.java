@@ -1,4 +1,4 @@
-package payment.example.domain;
+package payment.example.common.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

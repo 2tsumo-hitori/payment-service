@@ -1,19 +1,16 @@
-package payment.example.service;
+package payment.example.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.domain.Item;
-import payment.example.domain.Member;
-import payment.example.domain.Order;
-import payment.example.domain.OrderStatus;
-import payment.example.exception.OutOfStockException;
-import payment.example.repository.ItemRepository;
-import payment.example.repository.MemberRepository;
-import payment.example.repository.OrderRepository;
-import payment.example.repository.dto.OrderResponse;
+import payment.example.app.repository.MemberRepository;
+import payment.example.app.repository.OrderRepository;
+import payment.example.app.repository.dto.OrderResponse;
+import payment.example.common.domain.Item;
+import payment.example.common.domain.Member;
+import payment.example.common.domain.Order;
 
-import static payment.example.validate.PreCondition.*;
+
 
 @Service
 @RequiredArgsConstructor
