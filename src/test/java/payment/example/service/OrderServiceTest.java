@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.domain.Address;
-import payment.example.domain.Item;
-import payment.example.domain.Member;
-import payment.example.domain.Order;
-import payment.example.repository.ItemRepository;
-import payment.example.repository.MemberRepository;
-import payment.example.repository.OrderRepository;
-import payment.example.repository.dto.OrderResponse;
+import payment.example.common.domain.Address;
+import payment.example.common.domain.Item;
+import payment.example.common.domain.Member;
+import payment.example.app.repository.ItemRepository;
+import payment.example.app.repository.MemberRepository;
+import payment.example.app.repository.OrderRepository;
+import payment.example.app.repository.dto.OrderResponse;
+import payment.example.app.service.OrderService;
 
 
 @SpringBootTest

@@ -3,16 +3,18 @@ package payment.example;
 import com.siot.IamportRestClient.IamportClient;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import payment.example.domain.Address;
-import payment.example.domain.Item;
-import payment.example.domain.Member;
-import payment.example.repository.ItemRepository;
-import payment.example.repository.MemberRepository;
-
-import java.math.BigDecimal;
+import org.springframework.context.event.EventListener;
+import payment.example.common.domain.Address;
+import payment.example.common.domain.Item;
+import payment.example.common.domain.Member;
+import payment.example.app.repository.ItemRepository;
+import payment.example.app.repository.MemberRepository;
+import payment.example.common.support.aop.LogTraceAspect;
+import payment.example.common.support.logtrace.LogTrace;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,7 +34,12 @@ public class Config {
         return new IamportClient(keyConfig.getApiKey(), keyConfig.getApiSecret());
     }
 
-    @PostConstruct
+    @Bean
+    public LogTraceAspect logTraceAspect(LogTrace logTrace) {
+        return new LogTraceAspect(logTrace);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         memberRepository.save(Member.builder()
                 .name("고객")

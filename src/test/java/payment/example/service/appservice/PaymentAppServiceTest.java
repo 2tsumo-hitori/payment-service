@@ -9,12 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.controller.dto.PaymentRequest;
-import payment.example.domain.Item;
-import payment.example.exception.ItemStatusException;
-import payment.example.repository.ItemRepository;
-import payment.example.repository.dto.OrderResponse;
-import payment.example.service.OrderService;
+import payment.example.app.controller.dto.PaymentRequest;
+import payment.example.common.domain.Item;
+import payment.example.common.exception.ItemStatusException;
+import payment.example.app.repository.ItemRepository;
+import payment.example.app.repository.dto.OrderResponse;
+import payment.example.app.service.OrderService;
+import payment.example.app.service.appservice.PaymentAppService;
 
 import java.io.IOException;
 
