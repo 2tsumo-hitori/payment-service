@@ -1,4 +1,4 @@
-package payment.example.common.domain;
+package payment.example.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,24 +20,32 @@ public class Item {
     @Column(unique = true)
     private String name;
 
-    private Long stock;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Stock stock;
 
     private int price;
 
     private static final int MIN_VALUE = 0;
 
-    public void decreaseItemStock() {
-        this.stock -= 1;
-    }
+    private static final int MIN_STACK = 0;
 
     @Builder
-    public Item(String name, Long stock, int price) {
-        PreCondition.require(isNotBlank(name));
-        PreCondition.require(price > MIN_VALUE);
-        PreCondition.require(stock > MIN_VALUE);
+    public Item(String name, Stock stock, int price) {
+        require(isNotBlank(name));
+        require(price > MIN_VALUE);
 
         this.name = name;
         this.stock = stock;
         this.price = price;
+    }
+
+    public long getQuantity() {
+        return stock.getRemain();
+    }
+
+    public void purchase(final long quantity) {
+        itemStockValidate(getQuantity() > MIN_STACK);
+
+        stock.decrease(quantity);
     }
 }

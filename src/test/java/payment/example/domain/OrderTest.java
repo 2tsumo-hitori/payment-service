@@ -30,7 +30,7 @@ class OrderTest {
         item = Item.builder()
                 .name("상품1")
                 .price(100)
-                .stock(100L)
+                .stock(Stock.builder().remain(100).build())
                 .build();
     }
 

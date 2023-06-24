@@ -1,12 +1,10 @@
-package payment.example.app.repository.dto;
+package payment.example.repository.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import payment.example.common.domain.OrderStatus;
+import lombok.Data;
+import payment.example.domain.OrderStatus;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class OrderResponse {
     private Long orderId;
@@ -20,6 +18,4 @@ public class OrderResponse {
     private Long itemId;
 
     private String itemName;
-
-    private Long itemStock;
 }

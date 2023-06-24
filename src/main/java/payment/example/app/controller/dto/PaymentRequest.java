@@ -15,4 +15,5 @@ public class PaymentRequest {
     private String impUid;
     private String itemName;
     private Long memberId;
+    private long quantity;
 }

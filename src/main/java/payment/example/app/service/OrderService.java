@@ -1,29 +1,33 @@
-package payment.example.app.service;
+package payment.example.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import payment.example.common.domain.Item;
-import payment.example.common.domain.Member;
-import payment.example.common.domain.Order;
-import payment.example.app.repository.MemberRepository;
-import payment.example.app.repository.dto.OrderResponse;
-import payment.example.common.support.validate.PreCondition;
-import payment.example.app.repository.OrderRepository;
+import payment.example.domain.Item;
+import payment.example.domain.Member;
+import payment.example.domain.Order;
+import payment.example.domain.OrderStatus;
+import payment.example.exception.OutOfStockException;
+import payment.example.repository.ItemRepository;
+import payment.example.repository.MemberRepository;
+import payment.example.repository.OrderRepository;
+import payment.example.repository.dto.OrderResponse;
+
+import static payment.example.validate.PreCondition.*;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final MemberRepository memberRepository;
+
     private final OrderRepository orderRepository;
-    private final static int MINIMUM_SIZE = 0;
+
+    private final OptimisticLockStockService optimisticLockStockService;
     @Transactional
-    public OrderResponse makeOrder(Item item, Long memberId) {
+    public OrderResponse makeOrder(Item item, Long memberId, long quantity) {
         Member member = memberRepository.findById(memberId).orElseThrow();
 
-        PreCondition.itemStockValidate(item.getStock() > MINIMUM_SIZE);
-
-        item.decreaseItemStock();
+        optimisticLockStockService.decrease(item.getStock().getId(), quantity);
 
         Order order = orderRepository.save(Order
                 .builder()
