@@ -18,7 +18,7 @@ public class LogTraceAspect {
     @Around("execution(* payment.example.app..*(..))")
         public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        TraceStatus status = logTrace.start(joinPoint.getSignature().toShortString(), getIpAddr(joinPoint).orElse("0.0.0.0"));
+        TraceStatus status = logTrace.start(joinPoint.getSignature().toShortString(), getIpAddr(joinPoint).orElse("내부 서비스 사용"));
 
         Object proceed = joinPoint.proceed();
 

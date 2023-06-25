@@ -18,7 +18,7 @@ public class Order {
     private Long id;
 
     @Enumerated(STRING)
-    private OrderStatus status = 주문_성공;
+    private OrderStatus status = ORDER_SUCCESS;
 
     @ManyToOne
     private Member member;

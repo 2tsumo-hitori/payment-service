@@ -13,6 +13,7 @@ import payment.example.app.controller.dto.PaymentRequest;
 import payment.example.app.controller.dto.PaymentResponse;
 import payment.example.app.service.appservice.PortOneAppService;
 
+import static org.springframework.http.HttpStatus.*;
 import static payment.example.app.controller.dto.OrderResponse.create;
 
 @Controller
@@ -37,7 +38,7 @@ public class PaymentController {
     ) {
         GetOrderDto getOrderDto = paymentAppService.purchase(request);
 
-        return new PaymentResponse<>(HttpStatus.OK.value(), create(getOrderDto));
+        return new PaymentResponse<>(OK.value(), create(getOrderDto));
     }
 
     @ResponseBody
@@ -47,7 +48,7 @@ public class PaymentController {
     ) {
         portOneAppService.paymentCancel(request);
 
-        return new PaymentResponse<>(HttpStatus.OK.value(), "결제 취소 완료");
+        return new PaymentResponse<>(OK.value(), "결제 취소 완료");
     }
 }
 
