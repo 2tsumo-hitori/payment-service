@@ -8,7 +8,7 @@ import payment.example.common.domain.Stock;
 
 @Service
 @RequiredArgsConstructor
-public class OptimisticLockStockService {
+public class StockService {
 
     private final StockRepository stockRepository;
 

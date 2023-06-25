@@ -2,14 +2,11 @@ package payment.example.app.repository.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import payment.example.common.domain.OrderStatus;
 
 @Data
 @AllArgsConstructor
-public class OrderResponse {
+public class GetOrderDto {
     private Long orderId;
-
-    private OrderStatus status;
 
     private Long memberId;
 
