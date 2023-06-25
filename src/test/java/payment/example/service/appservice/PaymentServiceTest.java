@@ -11,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import payment.example.app.controller.dto.PaymentRequest;
 import payment.example.app.repository.ItemRepository;
-import payment.example.app.repository.dto.OrderResponse;
+import payment.example.app.repository.dto.GetOrderDto;
+import payment.example.app.service.appservice.callback.IamPortTemplate;
 import payment.example.app.service.OrderService;
-import payment.example.app.service.appservice.PaymentAppService;
+import payment.example.app.service.PaymentService;
 import payment.example.common.domain.Item;
 import payment.example.common.domain.Stock;
 import payment.example.common.exception.ItemStatusException;
@@ -27,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
-class PaymentAppServiceTest {
+class PaymentServiceTest {
     IamportClient iamportClient;
-    PaymentAppService paymentAppService;
-
-    final String test_imp_uid = "imp_448280090638";
+    PaymentService paymentAppService;
+    IamPortTemplate iamPortTemplate;
+    final String TEST_IMP_UID = "imp_448280090638";
 
     @Autowired
     ItemRepository itemRepository;
@@ -45,41 +46,43 @@ class PaymentAppServiceTest {
         String test_api_secret = "ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f";
         iamportClient = new IamportClient(test_api_key, test_api_secret);
 
-        paymentAppService = new PaymentAppService(iamportClient, itemRepository, orderService);
+        iamPortTemplate = new IamPortTemplate(iamportClient);
+
+        paymentAppService = new PaymentService(itemRepository, orderService, iamPortTemplate);
     }
 
     @Test
     void 포트원_결제_검증_성공() throws IamportResponseException, IOException {
-        IamportResponse<Payment> response = iamportClient.paymentByImpUid(test_imp_uid);
+        IamportResponse<Payment> response = iamportClient.paymentByImpUid(TEST_IMP_UID);
 
         System.out.println(response.getResponse().getName());
         System.out.println(response.getResponse().getAmount());
         System.out.println(response.getResponse());
 
         assertNotNull(response.getResponse());
-        assertEquals(test_imp_uid, response.getResponse().getImpUid());
+        assertEquals(TEST_IMP_UID, response.getResponse().getImpUid());
     }
 
     @Test
-    void PaymentAppService_결제_검증_성공() throws IamportResponseException, IOException {
+    void PaymentAppService_결제_검증_성공() {
         itemRepository.save(Item.builder()
                 .name("결제테스트")
                 .price(1004)
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        PaymentRequest request = new PaymentRequest(1004, test_imp_uid, "결제테스트", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
 
-        OrderResponse orderResponse = paymentAppService.paymentValidate(request);
+        GetOrderDto orderResponse = paymentAppService.purchase(request);
 
         assertThat(orderResponse).isNotNull();
     }
 
     @Test
     void PaymentAppService_결제_검증_실패__상품이_존재하지_않음() {
-        PaymentRequest request = new PaymentRequest(1004, test_imp_uid, "결제테스트", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
 
-        assertThatThrownBy(() -> paymentAppService.paymentValidate(request)).isInstanceOf(ItemStatusException.class);
+        assertThatThrownBy(() -> paymentAppService.purchase(request)).isInstanceOf(ItemStatusException.class);
     }
 
     @Test
@@ -90,9 +93,9 @@ class PaymentAppServiceTest {
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        PaymentRequest request = new PaymentRequest(1004, test_imp_uid, "fakeTest", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "fakeTest", 1L, 5);
 
-        assertThatThrownBy(() -> paymentAppService.paymentValidate(request)).isInstanceOf(ItemStatusException.class);
+        assertThatThrownBy(() -> paymentAppService.purchase(request)).isInstanceOf(ItemStatusException.class);
     }
 
     @Test
@@ -103,8 +106,8 @@ class PaymentAppServiceTest {
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        PaymentRequest request = new PaymentRequest(1003, test_imp_uid, "test", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1003, TEST_IMP_UID, "test", 1L, 5);
 
-        assertThatThrownBy(() -> paymentAppService.paymentValidate(request)).isInstanceOf(ItemStatusException.class);
+        assertThatThrownBy(() -> paymentAppService.purchase(request)).isInstanceOf(ItemStatusException.class);
     }
 }

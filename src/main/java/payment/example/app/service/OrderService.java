@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import payment.example.app.repository.MemberRepository;
 import payment.example.app.repository.OrderRepository;
-import payment.example.app.repository.dto.OrderResponse;
+import payment.example.app.repository.dto.GetOrderDto;
 import payment.example.common.domain.Item;
 import payment.example.common.domain.Member;
 import payment.example.common.domain.Order;
@@ -19,12 +19,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final OptimisticLockStockService optimisticLockStockService;
+    private final StockService stockService;
     @Transactional
-    public OrderResponse makeOrder(Item item, Long memberId, long quantity) {
+    public GetOrderDto makeOrder(Item item, Long memberId, long quantity) {
         Member member = memberRepository.findById(memberId).orElseThrow();
 
-        optimisticLockStockService.decrease(item.getStock().getId(), quantity);
+        stockService.decrease(item.getStock().getId(), quantity);
 
         Order order = orderRepository.save(Order
                 .builder()

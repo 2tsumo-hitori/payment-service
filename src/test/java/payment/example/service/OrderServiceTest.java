@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import payment.example.app.repository.ItemRepository;
 import payment.example.app.repository.MemberRepository;
 import payment.example.app.repository.OrderRepository;
-import payment.example.app.repository.dto.OrderResponse;
+import payment.example.app.repository.dto.GetOrderDto;
 import payment.example.app.service.OrderService;
 import payment.example.common.domain.Address;
 import payment.example.common.domain.Item;
@@ -68,7 +68,7 @@ class OrderServiceTest {
 
     @Test
     void 주문_생성_성공() {
-        OrderResponse orderResponse = orderService.makeOrder(item, member.getId(), 5);
+        GetOrderDto orderResponse = orderService.makeOrder(item, member.getId(), 5);
 
         Assertions.assertThat(orderResponse).isNotNull();
     }
