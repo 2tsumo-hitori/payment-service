@@ -1,3 +1,4 @@
-rootProject.name = 'example'
-include 'api'
-include 'common'
+rootProject.name = 'Payment-server'
+include 'payment-api'
+include 'payment-core'
+include 'payment-integration'

@@ -5,7 +5,7 @@ plugins {
 }
 
 subprojects {
-	group = 'payment'
+	group = 'payment-service'
 	version = '0.0.1-SNAPSHOT'
 	sourceCompatibility = '17'
 	targetCompatibility = '17'
@@ -26,11 +26,9 @@ subprojects {
 	}
 
 	dependencies {
-		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 		implementation 'org.springframework.boot:spring-boot-starter-web'
-
-		implementation 'com.github.iamport:iamport-rest-client-java:0.2.22'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-aop'
 
 		compileOnly 'org.projectlombok:lombok'
 
@@ -42,7 +40,7 @@ subprojects {
 	}
 }
 
-project(":common") {
+project(":payment-core") {
 	bootJar {
 		enabled = false
 	}
@@ -52,16 +50,33 @@ project(":common") {
 	}
 
 	dependencies {
-		implementation 'org.springframework.boot:spring-boot-starter-aop'
+
 	}
 }
 
-project(":api") {
+project(":payment-integration") {
+	bootJar {
+		enabled = true
+	}
 
 	dependencies {
-		implementation(project(":common"))
-		implementation 'org.springframework.boot:spring-boot-starter-webflux'
+		implementation(project(":payment-core"))
 		implementation 'com.github.iamport:iamport-rest-client-java:0.2.22'
+	}
+}
+
+project(":payment-api") {
+
+	dependencies {
+		implementation(project(":payment-integration"))
+		implementation(project(":payment-core"))
+
+		implementation 'org.springframework.boot:spring-boot-starter-webflux'
+		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+		testImplementation 'org.mockito:mockito-core'
+		testImplementation 'com.squareup.okhttp3:mockwebserver'
+
 	}
 
 	jar {
@@ -75,11 +90,4 @@ project(":api") {
 	test {
 		useJUnitPlatform()
 	}
-
 }
-
-//allprojects {
-//	repositories {
-//		maven { url 'https://jitpack.io' }
-//	}
-//}
