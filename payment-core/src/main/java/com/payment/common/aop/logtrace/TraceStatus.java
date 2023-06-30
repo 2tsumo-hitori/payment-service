@@ -1,4 +1,4 @@
-package com.payment.api.aop.logtrace;
+package com.payment.common.aop.logtrace;
 
 import lombok.Getter;
 

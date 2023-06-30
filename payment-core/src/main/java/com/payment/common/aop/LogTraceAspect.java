@@ -1,24 +1,28 @@
-package com.payment.api.aop;
+package com.payment.common.aop;
 
-import com.payment.api.aop.logtrace.TraceStatus;
-import com.payment.api.aop.logtrace.LogTrace;
+import com.payment.common.aop.logtrace.LogTrace;
+import com.payment.common.aop.logtrace.TraceStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Aspect
-@Slf4j
+@Component
 @RequiredArgsConstructor
 public class LogTraceAspect {
 
     private final LogTrace logTrace;
 
-    @Around("execution(* com.payment.api.controller..*(..)) || execution(* com.payment.api.service..*(..)) || execution(* com.payment.common.repository..*(..))")
+    @Pointcut("@within(com.payment.common.aop.pointcut.Logger))")
+    private void enableLogger(){};
+
+    @Around("enableLogger()")
         public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
 
         TraceStatus status = null;

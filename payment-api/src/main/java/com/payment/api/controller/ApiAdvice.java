@@ -1,8 +1,8 @@
 package com.payment.api.controller;
 
 import com.payment.api.controller.dto.PaymentResponse;
-import com.payment.paymentintegration.paymentmodule.exception.IamPortException.IamPortRunTimeException;
-import com.payment.paymentintegration.paymentmodule.exception.IamPortException.IamPortRunTimeIoException;
+import com.payment.paymentintegration.payment.exception.IamPortException.IamPortRunTimeException;
+import com.payment.paymentintegration.payment.exception.IamPortException.IamPortRunTimeIoException;
 import com.payment.common.exception.ItemStatusException;
 import com.payment.common.exception.OutOfStockException;
 import lombok.RequiredArgsConstructor;
