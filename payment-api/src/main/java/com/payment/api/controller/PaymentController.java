@@ -3,8 +3,9 @@ package com.payment.api.controller;
 import com.payment.api.controller.dto.OrderResponse;
 import com.payment.api.controller.dto.PaymentRequest;
 import com.payment.api.controller.dto.PaymentResponse;
+import com.payment.common.aop.pointcut.Logger;
 import com.payment.common.repository.dto.GetOrderDto;
-import com.payment.api.service.PaymentService;
+import com.payment.api.service.purchase.PurchaseService;
 import com.payment.api.service.appservice.PortOneAppService;
 import com.payment.api.service.dto.PaymentCancelRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +19,10 @@ import static com.payment.api.controller.dto.OrderResponse.*;
 @Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Logger
 public class PaymentController {
 
-    private final PaymentService paymentAppService;
+    private final PurchaseService paymentAppService;
 
     private final PortOneAppService portOneAppService;
 

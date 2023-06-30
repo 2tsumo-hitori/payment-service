@@ -1,4 +1,4 @@
-package com.payment.api.service;
+package com.payment.api.service.stock;
 
 import com.payment.common.repository.StockRepository;
 import com.payment.common.domain.Stock;
@@ -6,9 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
-public class StockService {
+public class DefaultStockService {
 
     private final StockRepository stockRepository;
 

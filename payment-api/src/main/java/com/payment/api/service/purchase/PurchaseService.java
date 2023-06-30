@@ -1,7 +1,9 @@
-package com.payment.api.service;
+package com.payment.api.service.purchase;
 
-import com.payment.paymentintegration.paymentmodule.PaymentTemplate;
-import com.payment.paymentintegration.paymentmodule.ValidatePayment;
+import com.payment.api.service.order.OrderService;
+import com.payment.common.aop.pointcut.Logger;
+import com.payment.paymentintegration.payment.iamport.PaymentTemplate;
+import com.payment.paymentintegration.payment.iamport.ValidatePayment;
 import com.payment.api.controller.dto.PaymentRequest;
 import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.dto.GetOrderDto;
@@ -16,7 +18,8 @@ import static com.payment.common.support.validate.PreCondition.itemPriceValidate
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService {
+@Logger
+public class PurchaseService {
 
     private final ItemRepository itemRepository;
 
@@ -26,7 +29,7 @@ public class PaymentService {
 
     @Transactional
     public GetOrderDto purchase(PaymentRequest request) {
-        Item item = itemRepository.findByName(request.getItemName()).orElseThrow(PaymentService::getExceptionMessage);
+        Item item = itemRepository.findByName(request.getItemName()).orElseThrow(PurchaseService::getExceptionMessage);
 
         itemPriceValidate(item.getQuantity() > request.getQuantity());
 

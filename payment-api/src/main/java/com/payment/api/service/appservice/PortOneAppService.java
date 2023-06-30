@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.api.service.dto.PaymentCancelRequest;
-import com.payment.paymentintegration.KeyConfig;
+import com.payment.common.aop.pointcut.Logger;
+import com.payment.paymentintegration.payment.iamport.KeyConfig;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
+@Logger
 public class PortOneAppService {
     private WebClient webClient;
 

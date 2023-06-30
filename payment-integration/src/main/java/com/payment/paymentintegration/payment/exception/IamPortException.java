@@ -1,4 +1,4 @@
-package com.payment.paymentintegration.paymentmodule.exception;
+package com.payment.paymentintegration.payment.exception;
 
 public class IamPortException extends RuntimeException{
 

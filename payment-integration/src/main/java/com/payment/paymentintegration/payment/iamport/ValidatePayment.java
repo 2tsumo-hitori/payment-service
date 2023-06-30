@@ -1,4 +1,4 @@
-package com.payment.paymentintegration.paymentmodule;
+package com.payment.paymentintegration.payment.iamport;
 
 import com.payment.common.domain.Item;
 

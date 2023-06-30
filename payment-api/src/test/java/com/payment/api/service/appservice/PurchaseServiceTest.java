@@ -1,16 +1,14 @@
 package com.payment.api.service.appservice;
 
 import com.payment.api.controller.dto.PaymentRequest;
-import com.payment.api.service.OrderService;
-import com.payment.api.service.PaymentService;
+import com.payment.api.service.order.OrderService;
+import com.payment.api.service.purchase.PurchaseService;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Stock;
 import com.payment.common.exception.ItemStatusException;
 import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.dto.GetOrderDto;
-import com.payment.paymentintegration.paymentmodule.DefaultPaymentClient;
-import com.payment.paymentintegration.paymentmodule.IamPortTemplate;
-import com.payment.paymentintegration.paymentmodule.ValidatePayment;
+import com.payment.paymentintegration.payment.iamport.IamPortTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,20 +19,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
 @ExtendWith(MockitoExtension.class)
-class PaymentServiceTest {
+class PurchaseServiceTest {
 
     @Autowired
     ItemRepository itemRepository;
@@ -45,14 +38,14 @@ class PaymentServiceTest {
     @Mock
     IamPortTemplate iamPortTemplate;
 
-    PaymentService paymentAppService;
+    PurchaseService paymentAppService;
 
     final String TEST_IMP_UID = "imp_448280090638";
 
 
     @BeforeEach
     public void setup() {
-        paymentAppService = new PaymentService(itemRepository, orderService, iamPortTemplate);
+        paymentAppService = new PurchaseService(itemRepository, orderService, iamPortTemplate);
     }
 
     @Test

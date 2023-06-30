@@ -1,4 +1,4 @@
-package com.payment.paymentintegration.paymentmodule;
+package com.payment.paymentintegration.payment.iamport;
 
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;

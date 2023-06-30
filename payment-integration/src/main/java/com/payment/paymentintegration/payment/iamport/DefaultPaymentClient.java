@@ -1,6 +1,6 @@
-package com.payment.paymentintegration.paymentmodule;
+package com.payment.paymentintegration.payment.iamport;
 
-import com.payment.paymentintegration.paymentmodule.exception.IamPortException;
+import com.payment.paymentintegration.payment.exception.IamPortException;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.Payment;
