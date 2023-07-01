@@ -7,6 +7,7 @@ import com.payment.common.domain.Member;
 import com.payment.common.domain.Stock;
 import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.MemberRepository;
+import com.payment.common.repository.OrderRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,9 @@ class StockServiceTest {
 
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
 
     Member member;
     Item item;
@@ -66,6 +70,8 @@ class StockServiceTest {
     @AfterEach
     public void after() {
         endTime = System.currentTimeMillis();
+
+        orderRepository.deleteAll();
 
         System.out.println(endTime - startTime + "ms");
     }

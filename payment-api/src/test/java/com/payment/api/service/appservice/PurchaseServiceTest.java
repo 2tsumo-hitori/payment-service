@@ -56,7 +56,7 @@ class PurchaseServiceTest {
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        lenient().when(iamPortTemplate.execute(any(), any()))
+        lenient().when(iamPortTemplate.purchase(any(), any()))
                 .thenReturn(new GetOrderDto(1L, 1L, "1", item.getId(), item.getName()));
 
         PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
@@ -68,7 +68,7 @@ class PurchaseServiceTest {
     void PaymentAppService_결제_검증_실패__상품이_존재하지_않음() {
         PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
 
-        lenient().when(iamPortTemplate.execute(any(), any()))
+        lenient().when(iamPortTemplate.purchase(any(), any()))
                 .thenReturn(new GetOrderDto(1L, 1L, "1", 0L, "결제테스트"));
 
         assertThatThrownBy(() -> paymentAppService.purchase(request)).isInstanceOf(ItemStatusException.class);
@@ -82,7 +82,7 @@ class PurchaseServiceTest {
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        lenient().when(iamPortTemplate.execute(any(), any()))
+        lenient().when(iamPortTemplate.purchase(any(), any()))
                 .thenReturn(new GetOrderDto(1L, 1L, "1", 0L, "fakeTest"));
 
         PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "fakeTest", 1L, 5);
@@ -98,7 +98,7 @@ class PurchaseServiceTest {
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        lenient().when(iamPortTemplate.execute(any(), any()))
+        lenient().when(iamPortTemplate.purchase(any(), any()))
                 .thenReturn(new GetOrderDto(1L, 1L, "1", item.getId(), item.getName()));
 
 

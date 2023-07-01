@@ -40,7 +40,7 @@ subprojects {
 	}
 }
 
-project(":payment-core") {
+project(":core") {
 	bootJar {
 		enabled = false
 	}
@@ -54,13 +54,13 @@ project(":payment-core") {
 	}
 }
 
-project(":payment-integration") {
+project(":integration") {
 	bootJar {
 		enabled = true
 	}
 
 	dependencies {
-		implementation(project(":payment-core"))
+		implementation(project(":core"))
 		implementation 'com.github.iamport:iamport-rest-client-java:0.2.22'
 		implementation'org.springframework.boot:spring-boot-starter-data-redis'
 		implementation 'org.redisson:redisson-spring-boot-starter:3.17.6'
@@ -71,15 +71,35 @@ project(":payment-integration") {
 project(":payment-api") {
 
 	dependencies {
-		implementation(project(":payment-integration"))
-		implementation(project(":payment-core"))
+		implementation(project(":integration"))
+		implementation(project(":core"))
 
 		implementation 'org.springframework.boot:spring-boot-starter-webflux'
 		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 		testImplementation 'org.mockito:mockito-core'
 		testImplementation 'com.squareup.okhttp3:mockwebserver'
+	}
 
+	jar {
+		enabled = false
+	}
+
+	bootJar {
+		enabled = true
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+project(":order-api") {
+
+	dependencies {
+		implementation(project(":integration"))
+		implementation(project(":core"))
+		implementation 'org.springframework.kafka:spring-kafka'
 	}
 
 	jar {

@@ -1,10 +1,8 @@
 package com.payment.api.service.stock;
 
 
-import com.payment.api.controller.dto.PaymentRequest;
 import com.payment.common.aop.pointcut.Logger;
 import com.payment.common.domain.Item;
-import com.payment.common.domain.Stock;
 import com.payment.paymentintegration.payment.kafka.producer.CreateOrderProducer;
 import com.payment.paymentintegration.payment.redis.service.RedissonService;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +25,10 @@ public class RedisStockService implements StockService {
 
     @Override
     public String decrease(Item item, Long memberId, Long quantity) {
-        if(redissonService.isAccessLock(item.getStock().getId())) {
+        if (redissonService.isAccessLock(item.getStock().getId())) {
             item.getStock().decrease(quantity);
 
-            createOrderProducer.create(memberId, quantity);
+            createOrderProducer.create(memberId, item.getId());
 
             return PAYMENT_SUCCESS;
         }

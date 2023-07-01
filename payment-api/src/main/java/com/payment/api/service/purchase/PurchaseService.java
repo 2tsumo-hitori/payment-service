@@ -32,7 +32,7 @@ public class PurchaseService {
 
         itemPriceValidate(item.getQuantity() > request.getQuantity());
 
-        return paymentTemplate.execute(
+        return paymentTemplate.purchase(
                 new ValidatePayment(item, request.getImpUid(), request.getAmount()),
                 () -> stockService.decrease(item, request.getMemberId(), request.getQuantity()));
     }
