@@ -1,4 +1,4 @@
-package com.payment.paymentintegration;
+package com.payment.paymentintegration.payment.iamport;
 
 import lombok.Getter;
 import lombok.Setter;

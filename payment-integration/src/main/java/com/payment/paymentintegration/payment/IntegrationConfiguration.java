@@ -1,6 +1,7 @@
-package com.payment.paymentintegration.payment.redis;
+package com.payment.paymentintegration.payment;
 
 import com.payment.paymentintegration.payment.iamport.KeyConfig;
+import com.payment.paymentintegration.payment.redis.RedisKeyConfig;
 import com.siot.IamportRestClient.IamportClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

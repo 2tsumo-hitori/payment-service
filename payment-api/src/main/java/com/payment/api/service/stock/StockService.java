@@ -1,7 +1,7 @@
 package com.payment.api.service.stock;
 
-import com.payment.common.domain.Stock;
+import com.payment.common.domain.Item;
 
 public interface StockService {
-    void decrease(Stock stock, Long quantity);
+    String decrease(Item item, Long memberId, Long quantity);
 }

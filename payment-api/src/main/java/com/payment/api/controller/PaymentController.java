@@ -1,19 +1,16 @@
 package com.payment.api.controller;
 
-import com.payment.api.controller.dto.OrderResponse;
 import com.payment.api.controller.dto.PaymentRequest;
-import com.payment.api.controller.dto.PaymentResponse;
+import com.payment.api.controller.dto.Response;
 import com.payment.common.aop.pointcut.Logger;
-import com.payment.common.repository.dto.GetOrderDto;
 import com.payment.api.service.purchase.PurchaseService;
 import com.payment.api.service.appservice.PortOneAppService;
-import com.payment.api.service.dto.PaymentCancelRequest;
+import com.payment.api.service.appservice.dto.PaymentCancelRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import static com.payment.api.controller.dto.OrderResponse.*;
 
 
 @Controller
@@ -33,23 +30,21 @@ public class PaymentController {
 
     @ResponseBody
     @PostMapping("/purchase")
-    public PaymentResponse<OrderResponse> purchase(
+    public Response<?> purchase(
             @RequestBody PaymentRequest request,
             HttpServletRequest req
     ) {
-        GetOrderDto getOrderDto = paymentAppService.purchase(request);
-
-        return new PaymentResponse<>(create(getOrderDto));
+        return new Response<>(paymentAppService.purchase(request));
     }
 
     @ResponseBody
-    @PostMapping("/payment/cancel")
-    public PaymentResponse<String> paymentCancel(
+    @PostMapping("/cancel")
+    public Response<?> paymentCancel(
             @RequestBody PaymentCancelRequest request
     ) {
         portOneAppService.paymentCancel(request);
 
-        return new PaymentResponse<>("결제 취소 완료");
+        return new Response<>("결제 취소 완료");
     }
 }
 

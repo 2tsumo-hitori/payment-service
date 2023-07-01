@@ -1,14 +1,12 @@
 package com.payment.api.service;
 
-import com.payment.api.service.order.OrderService;
+import com.payment.api.service.stock.StockService;
 import com.payment.common.domain.Address;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Member;
 import com.payment.common.domain.Stock;
 import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.MemberRepository;
-import com.payment.common.repository.OrderRepository;
-import com.payment.common.repository.dto.GetOrderDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,13 +21,10 @@ import java.util.concurrent.Executors;
 
 
 @SpringBootTest
-class OrderServiceTest {
+class StockServiceTest {
 
     @Autowired
-    OrderService orderService;
-
-    @Autowired
-    OrderRepository orderRepository;
+    StockService stockService;
 
     @Autowired
     MemberRepository memberRepository;
@@ -43,6 +38,9 @@ class OrderServiceTest {
     long startTime;
 
     long endTime;
+
+    private static final String PAYMENT_SUCCESS = "결제 완료";
+
 
     @BeforeEach
     void setUp() {
@@ -59,7 +57,7 @@ class OrderServiceTest {
         item = itemRepository.save(Item.builder()
                 .name("상품2")
                 .price(100)
-                .stock(Stock.builder().remain(100).build())
+                .stock(Stock.builder().remain(1000).build())
                 .build());
 
         startTime = System.currentTimeMillis();
@@ -70,22 +68,20 @@ class OrderServiceTest {
         endTime = System.currentTimeMillis();
 
         System.out.println(endTime - startTime + "ms");
-
-        orderRepository.deleteAll();
     }
 
     @Test
-    void 주문_생성_성공() {
-        GetOrderDto orderResponse = orderService.makeOrder(item, member.getId(), 5);
+    void 구매_성공() {
+        String success = stockService.decrease(item, member.getId(), item.getStock().getRemain());
 
-        Assertions.assertThat(orderResponse).isNotNull();
+        Assertions.assertThat(success).isEqualTo(PAYMENT_SUCCESS);
     }
 
     @Test
     void 주문_생성_동시성_테스트_성공() throws InterruptedException {
         long beforeStock = itemRepository.findById(item.getId()).orElseThrow().getQuantity();
 
-        int threadCount = 100;
+        int threadCount = 1000;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
 
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -93,7 +89,7 @@ class OrderServiceTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.execute(() -> {
                     try {
-                        orderService.makeOrder(item, member.getId(), 1);
+                        stockService.decrease(item, member.getId(), 1L);
                     }
                     finally {
                         latch.countDown();
@@ -104,7 +100,6 @@ class OrderServiceTest {
 
         latch.await();
 
-//        Assertions.assertThat(beforeStock - threadCount).isZero();
-//        Assertions.assertThat(orderRepository.findAll().size()).isEqualTo(threadCount);
+        Assertions.assertThat(beforeStock - threadCount).isZero();
     }
 }

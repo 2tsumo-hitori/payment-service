@@ -1,8 +1,8 @@
 package com.payment.api.service.appservice;
 
 import com.payment.api.controller.dto.PaymentRequest;
-import com.payment.api.service.order.OrderService;
 import com.payment.api.service.purchase.PurchaseService;
+import com.payment.api.service.stock.StockService;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Stock;
 import com.payment.common.exception.ItemStatusException;
@@ -33,7 +33,7 @@ class PurchaseServiceTest {
     ItemRepository itemRepository;
 
     @Autowired
-    OrderService orderService;
+    StockService stockService;
 
     @Mock
     IamPortTemplate iamPortTemplate;
@@ -45,7 +45,7 @@ class PurchaseServiceTest {
 
     @BeforeEach
     public void setup() {
-        paymentAppService = new PurchaseService(itemRepository, orderService, iamPortTemplate);
+        paymentAppService = new PurchaseService(itemRepository, iamPortTemplate, stockService);
     }
 
     @Test
@@ -61,9 +61,7 @@ class PurchaseServiceTest {
 
         PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
 
-        GetOrderDto orderResponse = paymentAppService.purchase(request);
-
-        assertThat(orderResponse).isNotNull();
+        assertThat(paymentAppService.purchase(request)).isNotNull();
     }
 
     @Test
