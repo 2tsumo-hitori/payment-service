@@ -12,3 +12,7 @@ spring:
     url: jdbc:mysql://localhost:3306/payment_service
     username: root
     password: 1234
+
+redis:
+  port: 6379
+  host: localhost

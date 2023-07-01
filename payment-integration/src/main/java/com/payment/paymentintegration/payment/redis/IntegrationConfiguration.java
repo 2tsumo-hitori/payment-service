@@ -1,5 +1,6 @@
-package com.payment.paymentintegration;
+package com.payment.paymentintegration.payment.redis;
 
+import com.payment.paymentintegration.payment.iamport.KeyConfig;
 import com.siot.IamportRestClient.IamportClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,5 +17,11 @@ public class IntegrationConfiguration {
     @Bean
     public IamportClient iamportClient(KeyConfig keyConfig) {
         return new IamportClient(keyConfig.getApiKey(), keyConfig.getApiSecret());
+    }
+
+    @Bean
+    @ConfigurationProperties("redis")
+    public RedisKeyConfig redisKeyConfig() {
+        return new RedisKeyConfig();
     }
 }
