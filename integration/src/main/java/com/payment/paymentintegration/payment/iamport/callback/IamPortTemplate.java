@@ -1,6 +1,8 @@
-package com.payment.paymentintegration.payment.iamport;
+package com.payment.paymentintegration.payment.iamport.callback;
 
 import com.payment.common.aop.pointcut.Logger;
+import com.payment.paymentintegration.payment.iamport.PaymentClient;
+import com.payment.paymentintegration.payment.iamport.ValidatePayment;
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

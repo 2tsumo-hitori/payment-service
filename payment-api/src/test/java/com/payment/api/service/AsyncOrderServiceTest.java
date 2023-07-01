@@ -1,6 +1,6 @@
 package com.payment.api.service;
 
-import com.payment.api.service.stock.StockService;
+import com.payment.api.service.stock.AsyncOrderService;
 import com.payment.common.domain.Address;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Member;
@@ -22,10 +22,10 @@ import java.util.concurrent.Executors;
 
 
 @SpringBootTest
-class StockServiceTest {
+class AsyncOrderServiceTest {
 
     @Autowired
-    StockService stockService;
+    AsyncOrderService stockService;
 
     @Autowired
     MemberRepository memberRepository;

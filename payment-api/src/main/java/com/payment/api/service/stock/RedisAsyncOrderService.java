@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Service
 @Transactional
+@Service
 @Logger
-public class RedisStockService implements StockService {
+public class RedisAsyncOrderService implements AsyncOrderService {
 
     private final RedissonService redissonService;
 

@@ -2,13 +2,13 @@ package com.payment.api.service.appservice;
 
 import com.payment.api.controller.dto.PaymentRequest;
 import com.payment.api.service.purchase.PurchaseService;
-import com.payment.api.service.stock.StockService;
+import com.payment.api.service.stock.AsyncOrderService;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Stock;
 import com.payment.common.exception.ItemStatusException;
 import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.dto.GetOrderDto;
-import com.payment.paymentintegration.payment.iamport.IamPortTemplate;
+import com.payment.paymentintegration.payment.iamport.callback.IamPortTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class PurchaseServiceTest {
     ItemRepository itemRepository;
 
     @Autowired
-    StockService stockService;
+    AsyncOrderService stockService;
 
     @Mock
     IamPortTemplate iamPortTemplate;

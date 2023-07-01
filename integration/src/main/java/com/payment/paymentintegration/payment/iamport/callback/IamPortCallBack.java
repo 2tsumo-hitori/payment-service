@@ -1,4 +1,4 @@
-package com.payment.paymentintegration.payment.iamport;
+package com.payment.paymentintegration.payment.iamport.callback;
 
 
 @FunctionalInterface

@@ -1,8 +1,8 @@
 package com.payment.api.service.purchase;
 
-import com.payment.api.service.stock.StockService;
+import com.payment.api.service.stock.AsyncOrderService;
 import com.payment.common.aop.pointcut.Logger;
-import com.payment.paymentintegration.payment.iamport.PaymentTemplate;
+import com.payment.paymentintegration.payment.iamport.callback.PaymentTemplate;
 import com.payment.paymentintegration.payment.iamport.ValidatePayment;
 import com.payment.api.controller.dto.PaymentRequest;
 import com.payment.common.repository.ItemRepository;
@@ -24,7 +24,7 @@ public class PurchaseService {
 
     private final PaymentTemplate paymentTemplate;
 
-    private final StockService stockService;
+    private final AsyncOrderService asyncOrderService;
 
     @Transactional
     public String purchase(PaymentRequest request) {
@@ -34,6 +34,6 @@ public class PurchaseService {
 
         return paymentTemplate.purchase(
                 new ValidatePayment(item, request.getImpUid(), request.getAmount()),
-                () -> stockService.decrease(item, request.getMemberId(), request.getQuantity()));
+                () -> asyncOrderService.decrease(item, request.getMemberId(), request.getQuantity()));
     }
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class KeyConfig {
+public class IamPortKeyConfig {
     private String apiKey;
     private String apiSecret;
 }

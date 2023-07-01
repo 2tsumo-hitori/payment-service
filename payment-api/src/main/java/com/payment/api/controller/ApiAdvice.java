@@ -16,31 +16,32 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Slf4j
 @RequiredArgsConstructor
 public class ApiAdvice {
+
     @ExceptionHandler(ItemStatusException.class)
-    public Response exception(ItemStatusException ex) {
+    public Response<String> exception(ItemStatusException ex) {
         log.info(ex.getMessage(), ex);
 
-        return new Response(BAD_REQUEST.value(), ex.getMessage(), "결제 실패");
+        return new Response<>(BAD_REQUEST.value(), ex.getMessage(), "결제 실패");
     }
 
     @ExceptionHandler(OutOfStockException.class)
-    public Response exception(OutOfStockException ex) {
+    public Response<String> exception(OutOfStockException ex) {
         log.info(ex.getMessage(), ex);
 
-        return new Response(BAD_REQUEST.value(), ex.getMessage(), "결제 실패");
+        return new Response<>(BAD_REQUEST.value(), ex.getMessage(), "결제 실패");
     }
 
     @ExceptionHandler(IamPortRunTimeException.class)
-    public Response exception(IamPortRunTimeException ex) {
+    public Response<String> exception(IamPortRunTimeException ex) {
         log.info(ex.getMessage(), ex);
 
-        return new Response(BAD_REQUEST.value(), ex.getMessage(), "결제 중 오류 발생");
+        return new Response<>(BAD_REQUEST.value(), ex.getMessage(), "결제 중 오류 발생");
     }
 
     @ExceptionHandler(IamPortRunTimeIoException.class)
-    public Response exception(IamPortRunTimeIoException ex) {
+    public Response<String> exception(IamPortRunTimeIoException ex) {
         log.info(ex.getMessage(), ex);
 
-        return new Response(BAD_REQUEST.value(), ex.getMessage(), "결제 중 오류 발생");
+        return new Response<>(BAD_REQUEST.value(), ex.getMessage(), "결제 중 오류 발생");
     }
 }
