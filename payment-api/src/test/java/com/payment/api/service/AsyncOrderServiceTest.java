@@ -14,12 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 
 @SpringBootTest
 class AsyncOrderServiceTest {
@@ -39,12 +39,7 @@ class AsyncOrderServiceTest {
     Member member;
     Item item;
 
-    long startTime;
-
-    long endTime;
-
     private static final String PAYMENT_SUCCESS = "결제 완료";
-
 
     @BeforeEach
     void setUp() {
@@ -64,16 +59,6 @@ class AsyncOrderServiceTest {
                 .stock(Stock.builder().remain(1000).build())
                 .build());
 
-        startTime = System.currentTimeMillis();
-    }
-
-    @AfterEach
-    public void after() {
-        endTime = System.currentTimeMillis();
-
-        orderRepository.deleteAll();
-
-        System.out.println(endTime - startTime + "ms");
     }
 
     @Test
@@ -81,6 +66,13 @@ class AsyncOrderServiceTest {
         String success = stockService.decrease(item, member.getId(), item.getStock().getRemain());
 
         Assertions.assertThat(success).isEqualTo(PAYMENT_SUCCESS);
+    }
+
+    @Test
+    void 구매_실패__재고_부족() {
+        Assertions.assertThatThrownBy(() ->
+                stockService.decrease(item, member.getId(), item.getStock().getRemain() + 1L))
+                .isInstanceOf(RuntimeException.class);
     }
 
     @Test
@@ -107,5 +99,29 @@ class AsyncOrderServiceTest {
         latch.await();
 
         Assertions.assertThat(beforeStock - threadCount).isZero();
+    }
+
+    @Test
+    void 주문_생성_동시성_테스트_실패__수량보다_많은_요청() throws InterruptedException {
+        int threadCount = 1001;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        for (int i = 0; i < threadCount; i++) {
+            executorService.execute(() -> {
+                    try {
+                        stockService.decrease(item, member.getId(), 1L);
+                    } catch (Exception e) {
+                        Assertions.assertThat(e.getMessage()).isEqualTo("재고 부족");
+                    }
+                    finally {
+                        latch.countDown();
+                    }
+                }
+            );
+        }
+
+        latch.await();
     }
 }
