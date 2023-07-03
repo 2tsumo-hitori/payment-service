@@ -1,6 +1,7 @@
 package com.payment.orderapi.service;
 
 
+import com.payment.common.aop.pointcut.Logger;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Member;
 import com.payment.common.domain.Order;
@@ -14,14 +15,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KafkaConsumerService implements MessageQueueService<OrderMessage> {
+@Logger
+public class KafkaConsumerService {
 
     private final OrderRepository orderRepository;
 
     private final MemberRepository memberRepository;
 
     private final ItemRepository itemRepository;
-    @Override
+
     @KafkaListener(topics = "order_topic", groupId = "order_group")
     public void orderListener(OrderMessage listener) {
         Item item = itemRepository.findById(listener.getItemId()).orElseThrow();
