@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Aspect
@@ -23,7 +25,7 @@ public class LogTraceAspect {
     private void enableLogger(){};
 
     @Around("enableLogger()")
-        public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
 
         TraceStatus status = null;
         try {
@@ -41,12 +43,10 @@ public class LogTraceAspect {
     }
 
     private Optional<String> getIpAddr(ProceedingJoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
-        for (Object arg : args) {
-            if (arg instanceof HttpServletRequest) {
-                return Optional.of(((HttpServletRequest) arg).getRemoteAddr());
-            }
-        }
-        return Optional.empty();
+
+        return Arrays.stream(joinPoint.getArgs())
+                .filter(arg -> arg instanceof HttpServletRequest)
+                .map(arg -> ((HttpServletRequest) arg).getRemoteAddr())
+                .findAny();
     }
 }
