@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class RedisConfiguration {
 
-    private final RedisKeyConfig redisKeyConfig;
-
     private static final String REDISSON_HOST_PREFIX = "redis://";
 
     @Bean
@@ -25,7 +23,7 @@ public class RedisConfiguration {
     @Bean
     public RedissonClient redissonClient() {
         Config config = new Config();
-        config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisKeyConfig.getHost() + ":" + redisKeyConfig.getPort());
+        config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisKeyConfig().getHost() + ":" + redisKeyConfig().getPort());
         RedissonClient redisson  = Redisson.create(config);
 
         return redisson;
