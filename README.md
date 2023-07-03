@@ -19,7 +19,7 @@
 ![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/b3a8973d-32f2-4d39-bd8a-d7933138d8b6)
 
 ## Postman API 테스트
-![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/d9c7865f-d266-4c42-93ec-8a88e2ab8228)
+![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/0da72c09-5d6e-477c-a99b-585e01b3854a)
 
 ![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/1406f737-5192-491f-9a3e-681296e0cb3a)
 
