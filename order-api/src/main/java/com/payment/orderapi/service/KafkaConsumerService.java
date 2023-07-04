@@ -1,7 +1,7 @@
 package com.payment.orderapi.service;
 
 
-import com.payment.common.aop.pointcut.Logger;
+import com.payment.common.aop.pointcut.LogTracer;
 import com.payment.common.domain.Item;
 import com.payment.common.domain.Member;
 import com.payment.common.domain.Order;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Logger
+@LogTracer
 public class KafkaConsumerService {
 
     private final OrderRepository orderRepository;

@@ -1,7 +1,7 @@
 package com.payment.api.service.purchase;
 
 import com.payment.api.service.stock.AsyncOrderService;
-import com.payment.common.aop.pointcut.Logger;
+import com.payment.common.aop.pointcut.LogTracer;
 import com.payment.paymentintegration.payment.iamport.callback.PaymentTemplate;
 import com.payment.paymentintegration.payment.iamport.ValidatePayment;
 import com.payment.api.controller.dto.PaymentRequest;
@@ -17,7 +17,7 @@ import static com.payment.common.support.validate.PreCondition.itemPriceValidate
 
 @Service
 @RequiredArgsConstructor
-@Logger
+@LogTracer
 public class PurchaseService {
 
     private final ItemRepository itemRepository;
@@ -34,6 +34,6 @@ public class PurchaseService {
 
         return paymentTemplate.purchase(
                 new ValidatePayment(item, request.getImpUid(), request.getAmount()),
-                () -> asyncOrderService.decrease(item, request.getMemberId(), request.getQuantity()));
+                () -> asyncOrderService.order(item, request.getMemberId(), request.getQuantity()));
     }
 }

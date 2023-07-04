@@ -25,26 +25,20 @@ public class AccessLockAspect {
 
     private static final String REDISSON_LOCK_PREFIX = "LOCK:";
 
-    @Pointcut("@annotation(com.payment.paymentintegration.payment.aop.AccessLock))")
-    private void enableStockAccessLock(){};
-
-    @Around("enableStockAccessLock()")
-    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-
-        AccessLock annotation = method.getAnnotation(AccessLock.class);
+    @Around("@annotation(accessLock))")
+    public Object execute(ProceedingJoinPoint joinPoint, AccessLock accessLock) throws Throwable {
+        String[] parameterNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames();
 
         String key = REDISSON_LOCK_PREFIX +
-                annotation.prefix() +
-                CustomSpringElParser.getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), annotation.key());
+                accessLock.prefix() +
+                CustomSpringElParser.getDynamicValue(parameterNames, joinPoint.getArgs(), accessLock.key());
 
         RLock lock = redissonClient.getLock(key);
 
         try {
-            boolean accessLock = lock.tryLock(annotation.waitTime(), annotation.leaseTime(), annotation.timeUnit());
+            boolean access = lock.tryLock(accessLock.waitTime(), accessLock.leaseTime(), accessLock.timeUnit());
 
-            if (!accessLock)
+            if (!access)
                 return false;
 
             return joinPoint.proceed();

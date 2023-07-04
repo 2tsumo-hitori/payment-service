@@ -1,6 +1,6 @@
 package com.payment.paymentintegration.payment.iamport.callback;
 
-import com.payment.common.aop.pointcut.Logger;
+import com.payment.common.aop.pointcut.LogTracer;
 import com.payment.paymentintegration.payment.iamport.PaymentClient;
 import com.payment.paymentintegration.payment.iamport.ValidatePayment;
 import com.siot.IamportRestClient.response.Payment;
@@ -14,7 +14,7 @@ import static com.payment.common.support.validate.PreCondition.itemPriceValidate
 @Component
 @RequiredArgsConstructor
 @Transactional
-@Logger
+@LogTracer
 public class IamPortTemplate implements PaymentTemplate {
 
     private final PaymentClient paymentClient;

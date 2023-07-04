@@ -42,6 +42,10 @@ public class Item {
         return stock.getRemain();
     }
 
+    public Long getStockId() {
+        return stock.getId();
+    }
+
     public void purchase(final long quantity) {
         itemStockValidate(getQuantity() > MIN_STACK);
 

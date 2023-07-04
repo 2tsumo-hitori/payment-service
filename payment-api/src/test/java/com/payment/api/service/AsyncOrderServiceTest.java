@@ -9,12 +9,10 @@ import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.MemberRepository;
 import com.payment.common.repository.OrderRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.concurrent.CountDownLatch;
@@ -63,7 +61,7 @@ class AsyncOrderServiceTest {
 
     @Test
     void 구매_성공() {
-        String success = stockService.decrease(item, member.getId(), item.getStock().getRemain());
+        String success = stockService.order(item, member.getId(), item.getStock().getRemain());
 
         Assertions.assertThat(success).isEqualTo(PAYMENT_SUCCESS);
     }
@@ -71,7 +69,7 @@ class AsyncOrderServiceTest {
     @Test
     void 구매_실패__재고_부족() {
         Assertions.assertThatThrownBy(() ->
-                stockService.decrease(item, member.getId(), item.getStock().getRemain() + 1L))
+                stockService.order(item, member.getId(), item.getStock().getRemain() + 1L))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -87,7 +85,7 @@ class AsyncOrderServiceTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.execute(() -> {
                     try {
-                        stockService.decrease(item, member.getId(), 1L);
+                        stockService.order(item, member.getId(), 1L);
                     }
                     finally {
                         latch.countDown();
@@ -111,7 +109,7 @@ class AsyncOrderServiceTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.execute(() -> {
                     try {
-                        stockService.decrease(item, member.getId(), 1L);
+                        stockService.order(item, member.getId(), 1L);
                     } catch (Exception e) {
                         Assertions.assertThat(e.getMessage()).isEqualTo("재고 부족");
                     }

@@ -21,7 +21,7 @@ public class LogTraceAspect {
 
     private final LogTrace logTrace;
 
-    @Pointcut("@within(com.payment.common.aop.pointcut.Logger))")
+    @Pointcut("@within(com.payment.common.aop.pointcut.LogTracer))")
     private void enableLogger(){};
 
     @Around("enableLogger()")
