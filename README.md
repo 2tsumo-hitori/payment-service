@@ -233,13 +233,13 @@
             - 어차피 비동기 요청을 보내봤자 우리 서버로 보내게될텐데, 
             서버의 부담을 해결할 수 없음.
     3.  **[✅](https://ko.emojiguide.com/%ea%b8%b0%ed%98%b8/check-mark-button/) 멀티 모듈을 활용해 각각의 서비스를 처리해주는 서버들을 통해 해결** 
-    - 애플리케이션 서버의 부담 ↓
-    - 서비스 로직의 복잡함 해결
-    - 공통 모듈을 정의함으로써 중복 코드 배제
+        - 애플리케이션 서버의 부담 ↓
+        - 서비스 로직의 복잡함 해결
+        - 공통 모듈을 정의함으로써 중복 코드 배제
     
     ### 한계 돌파
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fa3cbc0c-70a1-4d8f-b329-2afa3266c2b6/Untitled.png)
+    ![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/e522469a-feef-4f9e-8089-88485c7bfdd0)
     
     1. 확장 가능한 유연한 모듈 설계
     2. 메세지 브로커(Apache Kafka)를 사용해서 결제 검증 이후 토픽에 메세지 생성, 
@@ -414,14 +414,11 @@
     - 분산 락을 적용할 서비스에 어노테이션을 설정해주면 **중복 코드 방지 가능**
   </details>
 
-## 1차 속도 개선 ( 9800ms → 2817ms )
-![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/e295796b-6f88-4985-8f3c-dc9f941ee23d)
-![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/b395eb45-49e5-4ce6-9c40-84d62f38775a)
+## 1000건 동시 구매 속도 개선
+![Figure_1](https://github.com/2tsumo-hitori/payment-service/assets/96719735/d6252033-0eda-45a8-961c-99825eef4a14)
 
-## 2차 속도 개선 ( 651ms → 93ms )
-![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/65cb3070-fa21-4696-b6c9-b7efe06ed719)
-![image](https://github.com/2tsumo-hitori/payment-service/assets/96719735/5ced826c-fb69-4a2f-9bc2-e7cd97660da9)
-
+## api 요청 속도 개선
+![Figure_2](https://github.com/2tsumo-hitori/payment-service/assets/96719735/267e78ac-0e8a-4ef4-88fc-6a2ed2d30498)
 
 
 ## 계층별 테스트 코드
