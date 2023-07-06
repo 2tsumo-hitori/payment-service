@@ -1,9 +1,11 @@
 package com.payment.api.controller.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
+@NoArgsConstructor
 public class Response<T> {
     private int status = HttpStatus.OK.value();
     private String message;

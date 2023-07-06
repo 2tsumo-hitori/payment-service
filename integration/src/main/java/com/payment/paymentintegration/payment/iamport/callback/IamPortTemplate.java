@@ -5,6 +5,7 @@ import com.payment.paymentintegration.payment.iamport.PaymentClient;
 import com.payment.paymentintegration.payment.iamport.ValidatePayment;
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import static com.payment.common.support.validate.PreCondition.itemNameValidate;
 import static com.payment.common.support.validate.PreCondition.itemPriceValidate;
 
 @Component
+@Profile("local")
 @RequiredArgsConstructor
 @Transactional
 @LogTracer
