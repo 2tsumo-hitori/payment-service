@@ -13,7 +13,7 @@ spring:
     username: root
     password: 1234
   profiles:
-    active: local
+    active: test
 
 redis:
   port: 6379

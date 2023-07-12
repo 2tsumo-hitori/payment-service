@@ -2,9 +2,12 @@ package com.payment.paymentintegration.payment.aop;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+
+import java.util.stream.IntStream;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomSpringElParser {
@@ -12,9 +15,7 @@ public class CustomSpringElParser {
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
 
-        for (int i = 0; i < parameterNames.length; i++) {
-            context.setVariable(parameterNames[i], args[i]);
-        }
+        IntStream.range(0, parameterNames.length).forEach(i -> context.setVariable(parameterNames[i], args[i]));
 
         Object value = parser.parseExpression(key).getValue(context, Object.class);
 

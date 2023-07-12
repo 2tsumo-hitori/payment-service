@@ -9,6 +9,7 @@ import com.payment.common.exception.ItemStatusException;
 import com.payment.common.repository.ItemRepository;
 import com.payment.common.repository.dto.GetOrderDto;
 import com.payment.paymentintegration.payment.iamport.callback.IamPortTemplate;
+import com.payment.paymentintegration.payment.iamport.callback.PaymentTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -26,7 +28,6 @@ import static org.mockito.Mockito.lenient;
 
 @SpringBootTest
 @Transactional
-@ExtendWith(MockitoExtension.class)
 class PurchaseServiceTest {
 
     @Autowired
@@ -35,41 +36,26 @@ class PurchaseServiceTest {
     @Autowired
     AsyncOrderService stockService;
 
-    @Mock
-    IamPortTemplate iamPortTemplate;
-
+    @Autowired
     PurchaseService paymentAppService;
-
-    final String TEST_IMP_UID = "imp_448280090638";
-
-
-    @BeforeEach
-    public void setup() {
-        paymentAppService = new PurchaseService(itemRepository, iamPortTemplate, stockService);
-    }
 
     @Test
     void PaymentAppService_결제_검증_성공() {
-        Item item = itemRepository.save(Item.builder()
+        itemRepository.save(Item.builder()
                 .name("결제테스트")
                 .price(1004)
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        lenient().when(iamPortTemplate.purchase(any(), any()))
-                .thenReturn(new GetOrderDto(1L, 1L, "1", item.getId(), item.getName()));
 
-        PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1004, null, "결제테스트", 1L, 5);
 
         assertThat(paymentAppService.purchase(request)).isNotNull();
     }
 
     @Test
     void PaymentAppService_결제_검증_실패__상품이_존재하지_않음() {
-        PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "결제테스트", 1L, 5);
-
-        lenient().when(iamPortTemplate.purchase(any(), any()))
-                .thenReturn(new GetOrderDto(1L, 1L, "1", 0L, "결제테스트"));
+        PaymentRequest request = new PaymentRequest(1004, null, "결제테스트", 1L, 5);
 
         assertThatThrownBy(() -> paymentAppService.purchase(request)).isInstanceOf(ItemStatusException.class);
     }
@@ -82,27 +68,20 @@ class PurchaseServiceTest {
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        lenient().when(iamPortTemplate.purchase(any(), any()))
-                .thenReturn(new GetOrderDto(1L, 1L, "1", 0L, "fakeTest"));
-
-        PaymentRequest request = new PaymentRequest(1004, TEST_IMP_UID, "fakeTest", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1004, null, "fakeTest", 1L, 5);
 
         assertThatThrownBy(() -> paymentAppService.purchase(request)).isInstanceOf(ItemStatusException.class);
     }
 
     @Test
     void PaymentAppService_결제_검증_실패__상품_가격이_일치하지_않음() {
-        Item item = itemRepository.save(Item.builder()
+        itemRepository.save(Item.builder()
                 .name("test")
                 .price(1004)
                 .stock(Stock.builder().remain(100).build())
                 .build());
 
-        lenient().when(iamPortTemplate.purchase(any(), any()))
-                .thenReturn(new GetOrderDto(1L, 1L, "1", item.getId(), item.getName()));
-
-
-        PaymentRequest request = new PaymentRequest(1003, TEST_IMP_UID, "결제테스트", 1L, 5);
+        PaymentRequest request = new PaymentRequest(1003, null, "결제테스트", 1L, 5);
 
         assertThat(request.getAmount()).isNotEqualTo(1004);
     }

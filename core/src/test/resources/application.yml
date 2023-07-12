@@ -1,7 +1,3 @@
-payment:
-  api-key: 9586187999666324
-  api-secret: DO8or1iYkSoz4YiiWbmdD06edAuqJufnjnLKp4JJX8j26Ck3NHgqHnEVX9mGDB3XZOHpTr9QzsSF4dIS
-
 spring:
   jpa:
     hibernate:
@@ -13,8 +9,4 @@ spring:
     username: root
     password: 1234
   profiles:
-    active: local
-
-redis:
-  port: 6379
-  host: localhost
+    active: test
